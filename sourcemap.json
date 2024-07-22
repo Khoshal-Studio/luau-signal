@@ -1,1 +1,1 @@
-{"name":"signal","className":"Folder","filePaths":["default.project.json"],"children":[{"name":"signal","className":"ModuleScript","filePaths":["src\\signal\\init.luau"],"children":[{"name":"signal_types","className":"ModuleScript","filePaths":["src\\signal\\signal_types.luau"]}]}]}
+{"name":"signal","className":"ModuleScript","filePaths":["src\\init.luau","default.project.json"],"children":[{"name":"signal_types","className":"ModuleScript","filePaths":["src\\signal_types.luau"]}]}
