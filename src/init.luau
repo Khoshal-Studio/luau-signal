@@ -2,20 +2,18 @@
 
 -------------------------------------------------------------------------------------------
 
---[=[
-    @class signal
-]=]
-local signal = {}
-signal.__index = signal
+local module = {}
 
 -------------------------------------------------------------------------------------------
 
-local _types : nil = require(script:WaitForChild("signal_types"))
+local signal_types : nil = require(script:WaitForChild("signal_types"))
 
-export type connection = _types.connection
-export type signal = _types.signal
-export type fire_fn = _types.fire_fn
-export type restricted_signal = _types.restricted_signal
+export type connection = signal_types.connection
+export type signal = signal_types.signal
+export type internal_signal = signal_types.internal_signal
+export type internal_connection = signal_types.internal_connection
+export type fire<T> = signal_types.fire<T>
+export type restricted_signal = signal_types.restricted_signal
 
 -------------------------------------------------------------------------------------------
 
@@ -27,30 +25,46 @@ export type restricted_signal = _types.restricted_signal
     @param fn : `(...any) -> ()` — The signal handler function.
     @return connection : connection — The connection object.
 ]=]
-local function create_connection(signal: signal, fn: (...any) -> ()) : connection
-    local connection : any = {} :: any
-    connection._connected = true
-    connection._signal = signal
-    connection._fn = fn
-    connection._next = nil
+local function connection_new(signal: internal_signal, fn: (...any) -> ()) : connection
 
-    function connection:Disconnect(): ...any
-        if not self._connected then return end
-        self._connected = false
-        if self._signal._handlerListHead == self then
-            self._signal._handlerListHead = self._next
+    local connection : internal_connection = nil
+
+    --[[----------------------------------------------------------------------]]--
+
+    local function disconnect(self : internal_connection)
+        if not self.connected then return end
+
+        self.connected = false
+
+        if self.signal.handler_list_head == self then
+            self.signal.handler_list_head = self.next
         else
-            local prev : any = self._signal._handlerListHead
+            local prev : any = self.signal.handler_list_head
+
             while prev and prev._next ~= self do
                 prev = prev._next
             end
+
             if prev then
-                prev._next = self._next
+                prev._next = self.next
             end
         end
     end
 
-    return connection :: connection
+    --[[----------------------------------------------------------------------]]--
+
+    connection = {
+        connected = true,
+        signal = signal,
+        fn = fn,
+        next = nil,
+
+        Disconnect = disconnect
+    } :: any
+
+    --[[----------------------------------------------------------------------]]--
+
+    return (connection :: any) :: connection
 end
 
 -------------------------------------------------------------------------------------------
@@ -62,208 +76,145 @@ end
     @within signal
     @return signal : `signal` — The signal object.
 ]=]
-function signal.new() : signal
-    local self : any = setmetatable({}, signal) :: any
-    self._handlerListHead = nil
-    return self :: signal
+local function signal_new() : signal
+
+    --[[----------------------------------------------------------------------]]--
+    
+    local signal : internal_signal = nil
+
+    --[[----------------------------------------------------------------------]]--
+
+    
+    --[=[
+        Connects a handler function to the signal.
+
+        @within signal
+        @method Connect
+        @param self : signal — The signal object.
+        @param fn : `(...any) -> ()` — The signal handler function.
+        @return connection : `connection` — The connection object.
+    ]=]
+    local function connect(self : internal_signal, fn: (...any) -> ()) : connection
+        local connection : internal_connection = connection_new(self, fn) :: any
+
+        if self.handler_list_head then
+            connection.next = self.handler_list_head
+            self.handler_list_head = connection
+        else
+            self.handler_list_head = connection
+        end
+
+        return connection :: connection
+    end
+
+    --[=[
+        Disconnects all handler functions from the signal.
+
+        @function signal.DisconnectAll
+        @within signal
+        @param self : `signal` — The signal object.
+    ]=]
+
+    local function disconnect_all(self : internal_signal)
+        self.handler_list_head = nil
+    end
+
+    --[=[
+        Fires the signal with the given arguments.
+
+        @function signal.Fire
+        @within signal
+        @param self : `signal` — The signal object.
+        @param ... : `any` — The arguments to pass to the signal handlers.
+    ]=]
+    local function fire(self : internal_signal, ...)
+        local item = (self.handler_list_head :: any) :: internal_connection 
+
+        while item do
+            if item.connected then
+                task.spawn(item.fn, ...)
+            end
+
+            item = item.next :: any
+        end
+    end
+
+    --[=[
+        Yields the current thread until the signal is fired.
+
+        @function signal.Wait
+        @within signal
+        @param self : `signal` — The signal object.
+        @return ... : `any` — The arguments passed to the signal handlers.
+        @yields
+    ]=]
+    local function wait(self : internal_signal, ...)
+        local waiting_coroutine = coroutine.running()
+
+        local connection : connection = nil
+        connection = self:Connect(function(...)
+            connection:Disconnect()
+            task.spawn(waiting_coroutine, ...)
+        end)
+
+        return coroutine.yield()
+    end
+
+    --[=[
+        Connects a handler function to the signal that will only be called once.
+
+        @function signal.Once
+        @within signal
+        @param self : `signal` — The signal object.
+        @param fn : `(...any) -> ()` — The signal handler function.
+        @return connection : `connection` — The connection object.
+    ]=]
+    local function once(self : internal_signal, fn: (...any) -> ())
+        local connection : connection = nil
+        connection = self:Connect(function(...)
+            local internal = connection :: internal_connection
+            if internal.connected then
+                connection:Disconnect()
+            end
+
+            fn(...)
+        end)
+
+        return connection
+    end
+
+    local function get_restricted(self : internal_signal) : restricted_signal
+        local restricted : restricted_signal = nil
+
+        restricted = {
+            Connect = connect,
+            DisconnectAll = disconnect_all,
+            Wait = wait,
+            Once = once
+        } :: any
+
+        return restricted
+    end
+    
+    --[[----------------------------------------------------------------------]]--
+
+    signal = {
+        handler_list_head = nil,
+
+        Connect = connect,
+        DisconnectAll = disconnect_all,
+        Fire = fire,
+        Wait = wait,
+        Once = once,
+        GetRestricted = get_restricted
+    } :: any
+
+
+    return (signal :: any) :: signal
 end 
 
---[=[
-    Connects a handler function to the signal.
-
-    @within signal
-    @method Connect
-    @param self : signal — The signal object.
-    @param fn : `(...any) -> ()` — The signal handler function.
-    @return connection : `connection` — The connection object.
-]=]
-function signal.Connect(self : any, fn: (...any) -> ()): connection
-    local connection : any = create_connection(self, fn) :: any
-    if self._handlerListHead then
-        connection._next = self._handlerListHead
-        self._handlerListHead = connection
-    else
-        self._handlerListHead = connection
-    end
-    return connection :: connection
-end
-
---[=[
-    Disconnects all handler functions from the signal.
-
-    @function signal.DisconnectAll
-    @within signal
-    @param self : `signal` — The signal object.
-]=]
-function signal:DisconnectAll()
-    self._handlerListHead = nil
-end
-
---[=[
-    Fires the signal with the given arguments.
-
-    @function signal.Fire
-    @within signal
-    @param self : `signal` — The signal object.
-    @param ... : `any` — The arguments to pass to the signal handlers.
-]=]
-function signal:Fire(...: any)
-    local item = self._handlerListHead
-    while item do
-        if item._connected then
-            task.spawn(item._fn, ...)
-        end
-        item = item._next
-    end
-end
-
---[=[
-    Yields the current thread until the signal is fired.
-
-    @function signal.Wait
-    @within signal
-    @param self : `signal` — The signal object.
-    @return ... : `any` — The arguments passed to the signal handlers.
-    @yields
-]=]
-function signal:Wait()
-    local waitingCoroutine = coroutine.running()
-    local connection
-    connection = self:Connect(function(...)
-        connection:Disconnect()
-        task.spawn(waitingCoroutine, ...)
-    end)
-    return coroutine.yield()
-end
-
---[=[
-    Connects a handler function to the signal that will only be called once.
-
-    @function signal.Once
-    @within signal
-    @param self : `signal` — The signal object.
-    @param fn : `(...any) -> ()` — The signal handler function.
-    @return connection : `connection` — The connection object.
-]=]
-function signal:Once(fn: (...any) -> ())
-    local connection
-    connection = self:Connect(function(...)
-        if connection._connected then
-            connection:Disconnect()
-        end
-        fn(...)
-    end)
-    return connection
-end
-
 -------------------------------------------------------------------------------------------
 
---[=[
-    @class restricted_signal
-]=]
-local restricted_signal = {}
-restricted_signal.__index = restricted_signal
-
---[=[
-    Creates a new restricted signal object.
-
-    @function restricted_signal.new
-    @within restricted_signal
-    @return restricted_signal : `restricted_signal` — The restricted signal object.
-    @return fire_fn : `fire_fn` — The fire function.
-]=]
-function restricted_signal.new(): (restricted_signal, fire_fn)
-    local self = setmetatable({}, restricted_signal) :: any
-    self._handlerListHead = nil
-
-    local function Fire(...: any)
-        local item = self._handlerListHead
-        while item do
-            if item._connected then
-                task.spawn(item._fn, ...)
-            end
-            item = item._next
-        end
-    end
-
-    return self :: restricted_signal, Fire
-end
-
---[=[
-    Connects a handler function to the restricted signal.
-
-    @function restricted_signal.Connect
-    @within restricted_signal
-    @param self : `restricted_signal` — The restricted signal object.
-    @param fn : `(...any) -> ()` — The signal handler function.
-    @return connection : `connection` — The connection object.
-]=]
-function restricted_signal.Connect(self : any, fn: (...any) -> ()): connection
-    local connection = create_connection(self, fn) :: any
-    if self._handlerListHead then
-        connection._next = self._handlerListHead
-        self._handlerListHead = connection
-    else
-        self._handlerListHead = connection
-    end
-    return connection :: connection
-end
-
---[=[
-    Disconnects all handler functions from the restricted signal.
-
-    @function restricted_signal.DisconnectAll
-    @within restricted_signal
-    @param self : `restricted_signal` — The restricted signal object.
-]=]
-function restricted_signal:DisconnectAll()
-    self._handlerListHead = nil
-end
-
---[=[
-    Yields the current thread until the restricted signal is fired.
-
-    @function restricted_signal.Wait
-    @within restricted_signal
-    @param self : `restricted_signal` — The restricted signal object.
-    @return ... : `any` — The arguments passed to the signal handlers.
-    @yields
-]=]
-function restricted_signal:Wait()
-    local waitingCoroutine = coroutine.running()
-    local connection
-    connection = self:Connect(function(...)
-        connection:Disconnect()
-        task.spawn(waitingCoroutine, ...)
-    end)
-    return coroutine.yield()
-end
-
---[=[
-    Connects a handler function to the restricted signal that will only be called once.
-
-    @function restricted_signal.Once
-    @within restricted_signal
-    @param self : `restricted_signal` — The restricted signal object.
-    @param fn : `(...any) -> ()` — The signal handler function.
-    @return connection : `connection` — The connection object.
-]=] 
-function restricted_signal:Once(fn: (...any) -> ())
-    local connection
-    connection = self:Connect(function(...)
-        if connection._connected then
-            connection:Disconnect()
-        end
-        fn(...)
-    end)
-    return connection
-end
-
--------------------------------------------------------------------------------------------
-
-return {
-    signal = signal,
-    restricted_signal = restricted_signal
-}
+return signal_new()
 
 -------------------------------------------------------------------------------------------
