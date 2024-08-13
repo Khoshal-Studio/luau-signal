@@ -20,7 +20,7 @@ export type internal_connection =
     connected : boolean,
     signal : internal_signal,
     fn : (...any) -> (),
-    next : connection?,
+    next : internal_connection?,
 
     Disconnect : disconnect
 }
@@ -52,12 +52,12 @@ export type signal =
     Fire : fire<signal>,
     Wait : wait<signal>,
     Once : once<signal>,
-    GetRestricted : get_restricted<signal>
+    Restricted : restricted_signal
 }
 
 export type internal_signal = signal &
 {
-    handler_list_head : connection?,
+    handler_list_head : internal_connection?,
 }
 
 --[=[
