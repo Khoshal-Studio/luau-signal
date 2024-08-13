@@ -6,8 +6,8 @@ local signal_types : nil = require(script:WaitForChild("signal_types"))
 
 export type connection = signal_types.connection
 export type signal = signal_types.signal
-export type internal_signal = signal_types.internal_signal
-export type internal_connection = signal_types.internal_connection
+type internal_signal = signal_types.internal_signal
+type internal_connection = signal_types.internal_connection
 export type fire<T> = signal_types.fire<T>
 export type restricted_signal = signal_types.restricted_signal
 
