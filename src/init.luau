@@ -2,10 +2,6 @@
 
 -------------------------------------------------------------------------------------------
 
-local module = {}
-
--------------------------------------------------------------------------------------------
-
 local signal_types : nil = require(script:WaitForChild("signal_types"))
 
 export type connection = signal_types.connection
