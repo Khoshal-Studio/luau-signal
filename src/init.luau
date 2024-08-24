@@ -93,6 +93,8 @@ local function signal_new() : signal
         @return connection : `connection` — The connection object.
     ]=]
     local function connect(self : internal_signal, fn: (...any) -> ()) : connection
+        if (self :: any).__index then self = (self :: any).__index end
+
         local connection : internal_connection = connection_new(self, fn) :: any
 
         if self.handler_list_head then
@@ -114,6 +116,8 @@ local function signal_new() : signal
     ]=]
 
     local function disconnect_all(self : internal_signal)
+        if (self :: any).__index then self = (self :: any).__index end
+
         self.handler_list_head = nil
     end
 
@@ -147,6 +151,8 @@ local function signal_new() : signal
         @yields
     ]=]
     local function wait(self : internal_signal, ...)
+        if (self :: any).__index then self = (self :: any).__index end
+
         local waiting_coroutine = coroutine.running()
 
         local connection : connection = nil
@@ -168,6 +174,8 @@ local function signal_new() : signal
         @return connection : `connection` — The connection object.
     ]=]
     local function once(self : internal_signal, fn: (...any) -> ())
+        if (self :: any).__index then self = (self :: any).__index end
+
         local connection : connection = nil
         connection = self:Connect(function(...)
             local internal = connection :: internal_connection
@@ -187,7 +195,7 @@ local function signal_new() : signal
         Connect = connect,
         DisconnectAll = disconnect_all,
         Wait = wait,
-        Once = once
+        Once = once,
     }
 
     --[[----------------------------------------------------------------------]]--
@@ -202,7 +210,12 @@ local function signal_new() : signal
         Once = once,
         Restricted = restricted
     } :: any
- 
+
+    --[[----------------------------------------------------------------------]]--
+
+    restricted.__index = signal
+
+    --[[----------------------------------------------------------------------]]--
 
     return (signal :: any) :: signal
 end 
