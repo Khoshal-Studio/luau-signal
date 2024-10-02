@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v2.3.1">
 <title data-rh="true">connection | luau-signal</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://Khoshal-Studio.github.io/luau-signal/api/connection"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="connection | luau-signal"><meta data-rh="true" name="description" content=" A connection object that can be used to disconnect the signal handler."><meta data-rh="true" property="og:description" content=" A connection object that can be used to disconnect the signal handler."><link data-rh="true" rel="canonical" href="https://Khoshal-Studio.github.io/luau-signal/api/connection"><link data-rh="true" rel="alternate" href="https://Khoshal-Studio.github.io/luau-signal/api/connection" hreflang="en"><link data-rh="true" rel="alternate" href="https://Khoshal-Studio.github.io/luau-signal/api/connection" hreflang="x-default"><link rel="stylesheet" href="/luau-signal/assets/css/styles.19a5646f.css">
-<link rel="preload" href="/luau-signal/assets/js/runtime~main.21cd6aec.js" as="script">
-<link rel="preload" href="/luau-signal/assets/js/main.8954f18b.js" as="script">
+<link rel="preload" href="/luau-signal/assets/js/runtime~main.cb6c3f37.js" as="script">
+<link rel="preload" href="/luau-signal/assets/js/main.91281263.js" as="script">
 </head>
 <body class="navigation-with-keyboard">
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
@@ -16,7 +16,9 @@
 <pre><code>Disconnect: (self: disconnect) -> ()
 </code></pre>
 <p>}</p>
-</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="connection.new"><code style="text-decoration:none">connection.new</code><a href="#connection.new" class="hash-link" aria-label="Direct link to connection.new" title="Direct link to connection.new">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/connection.luau#L51"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>connection<!-- -->.</code><code class="green_DgR4">connection.new</code><code>(</code><div class="inset_uKQm"><div><code>signal<!-- -->: </code><code class="blue_P4bS">internal_signal</code><code class="blue_P4bS">—</code><code class="blue_P4bS">The</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/signal#signal">signal</a></code><code class="blue_P4bS">that</code><code class="blue_P4bS">the</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/connection#connection">connection</a></code><code class="blue_P4bS">is</code><code class="blue_P4bS">connected</code><code class="blue_P4bS">to.</code><code>,</code></div><div><code>fn<!-- -->: </code><code class="purple_ieR2">(</code><code class="blue_P4bS">...any</code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="purple_ieR2">(</code><code class="purple_ieR2">)</code><code class="blue_P4bS">—</code><code class="blue_P4bS">The</code><code class="blue_P4bS">function</code><code class="blue_P4bS">that</code><code class="blue_P4bS">is</code><code class="blue_P4bS">connected</code><code class="blue_P4bS">to</code><code class="blue_P4bS">the</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/signal#signal">signal.</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/connection#connection">connection</a></code><code>: </code><code class="blue_P4bS">internal_connection</code><code class="blue_P4bS">—</code><code class="blue_P4bS">The</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/connection#connection">connection</a></code><code class="blue_P4bS">object.</code></div><div>
+</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="properties">Properties<a href="#properties" class="hash-link" aria-label="Direct link to Properties" title="Direct link to Properties">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="next"><code style="text-decoration:none">next</code><a href="#next" class="hash-link" aria-label="Direct link to next" title="Direct link to next">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/connection.luau#L91"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>connection<!-- -->.<!-- -->next<!-- -->:<!-- --> </code> <code class="blue_P4bS">internal_connection?</code></div><div>
+<p>The next connection in the linked list.</p>
+</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="connection.new"><code style="text-decoration:none">connection.new</code><a href="#connection.new" class="hash-link" aria-label="Direct link to connection.new" title="Direct link to connection.new">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/connection.luau#L51"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>connection<!-- -->.</code><code class="green_DgR4">connection.new</code><code>(</code><div class="inset_uKQm"><div><code>signal<!-- -->: </code><code class="blue_P4bS">internal_signal</code><code>,</code></div><div><code>fn<!-- -->: </code><code class="purple_ieR2">(</code><code class="blue_P4bS">...any</code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="purple_ieR2">(</code><code class="purple_ieR2">)</code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/connection#connection">connection</a></code><code>: </code><code class="blue_P4bS">internal_connection</code></div><div>
 <p>Creates a new connection object.</p>
 </div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Disconnect"><code style="text-decoration:none">Disconnect</code><a href="#Disconnect" class="hash-link" aria-label="Direct link to Disconnect" title="Direct link to Disconnect">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/connection.luau#L24"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>connection<!-- -->:</code><code class="green_DgR4">Disconnect</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Disconnects the connection from the signal.</p>
@@ -40,18 +42,18 @@
                 {
                     &quot;name&quot;: &quot;signal&quot;,
                     &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;internal_signal — The signal that the connection is connected to.&quot;
+                    &quot;lua_type&quot;: &quot;internal_signal&quot;
                 },
                 {
                     &quot;name&quot;: &quot;fn&quot;,
                     &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;(...any) -&gt; () — The function that is connected to the signal.&quot;
+                    &quot;lua_type&quot;: &quot;(...any) -&gt; ()&quot;
                 }
             ],
             &quot;returns&quot;: [
                 {
                     &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;connection : internal_connection — The connection object.&quot;
+                    &quot;lua_type&quot;: &quot;connection : internal_connection&quot;
                 }
             ],
             &quot;function_type&quot;: &quot;static&quot;,
@@ -61,7 +63,17 @@
             }
         }
     ],
-    &quot;properties&quot;: [],
+    &quot;properties&quot;: [
+        {
+            &quot;name&quot;: &quot;next&quot;,
+            &quot;desc&quot;: &quot;The next connection in the linked list.\n        &quot;,
+            &quot;lua_type&quot;: &quot;internal_connection?&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 91,
+                &quot;path&quot;: &quot;src/connection.luau&quot;
+            }
+        }
+    ],
     &quot;types&quot;: [
         {
             &quot;name&quot;: &quot;connection&quot;,
@@ -79,8 +91,8 @@
         &quot;line&quot;: 14,
         &quot;path&quot;: &quot;src/connection.luau&quot;
     }
-}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#connection" class="table-of-contents__link toc-highlight">connection</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#Disconnect" class="table-of-contents__link toc-highlight">:Disconnect</a></li><li><a href="#connection.new" class="table-of-contents__link toc-highlight">.connection.new</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2024 Khoshal-Studio. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
-<script src="/luau-signal/assets/js/runtime~main.21cd6aec.js"></script>
-<script src="/luau-signal/assets/js/main.8954f18b.js"></script>
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#connection" class="table-of-contents__link toc-highlight">connection</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#next" class="table-of-contents__link toc-highlight">next</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#Disconnect" class="table-of-contents__link toc-highlight">:Disconnect</a></li><li><a href="#connection.new" class="table-of-contents__link toc-highlight">.connection.new</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2024 Khoshal-Studio. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/luau-signal/assets/js/runtime~main.cb6c3f37.js"></script>
+<script src="/luau-signal/assets/js/main.91281263.js"></script>
 </body>
 </html>
