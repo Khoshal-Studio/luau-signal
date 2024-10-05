@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v2.3.1">
 <title data-rh="true">connection | luau-signal</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://Khoshal-Studio.github.io/luau-signal/api/connection"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="connection | luau-signal"><meta data-rh="true" name="description" content="A connection object that can be used to disconnect the signal handler."><meta data-rh="true" property="og:description" content="A connection object that can be used to disconnect the signal handler."><link data-rh="true" rel="canonical" href="https://Khoshal-Studio.github.io/luau-signal/api/connection"><link data-rh="true" rel="alternate" href="https://Khoshal-Studio.github.io/luau-signal/api/connection" hreflang="en"><link data-rh="true" rel="alternate" href="https://Khoshal-Studio.github.io/luau-signal/api/connection" hreflang="x-default"><link rel="stylesheet" href="/luau-signal/assets/css/styles.19a5646f.css">
-<link rel="preload" href="/luau-signal/assets/js/runtime~main.72e69a94.js" as="script">
-<link rel="preload" href="/luau-signal/assets/js/main.983b5747.js" as="script">
+<link rel="preload" href="/luau-signal/assets/js/runtime~main.a5b96083.js" as="script">
+<link rel="preload" href="/luau-signal/assets/js/main.aa5fe03d.js" as="script">
 </head>
 <body class="navigation-with-keyboard">
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
@@ -13,7 +13,7 @@
 <p>A connection object that can be used to disconnect the signal handler.</p>
 </div></header><h2 class="anchor anchorWithStickyNavbar_LWe7" id="types">Types<a href="#types" class="hash-link" aria-label="Direct link to Types" title="Direct link to Types">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="connection"><code style="text-decoration:none">connection</code><a href="#connection" class="hash-link" aria-label="Direct link to connection" title="Direct link to connection">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/types.luau#L13"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code class="purple_ieR2">interface</code> <code>connection<!-- --> <!-- -->{</code><div class="inset_uKQm"><div><code>Disconnect<!-- -->: </code><code class="purple_ieR2">(</code><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/luau-signal/api/connection#connection">connection</a></code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="purple_ieR2">(</code><code class="purple_ieR2">)</code></div></div><code>}</code></div><div>
 <p>A connection object that can be used to disconnect the signal handler.</p>
-</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Disconnect"><code style="text-decoration:none">Disconnect</code><a href="#Disconnect" class="hash-link" aria-label="Direct link to Disconnect" title="Direct link to Disconnect">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/connection.luau#L44"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>connection<!-- -->:</code><code class="green_DgR4">Disconnect</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Disconnect"><code style="text-decoration:none">Disconnect</code><a href="#Disconnect" class="hash-link" aria-label="Direct link to Disconnect" title="Direct link to Disconnect">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Khoshal-Studio/luau-signal/blob/master/src/connection.luau#L43"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>connection<!-- -->:</code><code class="green_DgR4">Disconnect</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Disconnects the connection from the signal.</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
@@ -24,7 +24,7 @@
             &quot;returns&quot;: [],
             &quot;function_type&quot;: &quot;method&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 44,
+                &quot;line&quot;: 43,
                 &quot;path&quot;: &quot;src/connection.luau&quot;
             }
         }
@@ -35,9 +35,8 @@
             &quot;desc&quot;: &quot;Whether the connection is currently connected to the signal.\r&quot;,
             &quot;lua_type&quot;: &quot;boolean&quot;,
             &quot;private&quot;: true,
-            &quot;readonly&quot;: true,
             &quot;source&quot;: {
-                &quot;line&quot;: 19,
+                &quot;line&quot;: 18,
                 &quot;path&quot;: &quot;src/connection.luau&quot;
             }
         },
@@ -48,7 +47,7 @@
             &quot;private&quot;: true,
             &quot;readonly&quot;: true,
             &quot;source&quot;: {
-                &quot;line&quot;: 25,
+                &quot;line&quot;: 24,
                 &quot;path&quot;: &quot;src/connection.luau&quot;
             }
         },
@@ -59,7 +58,7 @@
             &quot;private&quot;: true,
             &quot;readonly&quot;: true,
             &quot;source&quot;: {
-                &quot;line&quot;: 31,
+                &quot;line&quot;: 30,
                 &quot;path&quot;: &quot;src/connection.luau&quot;
             }
         },
@@ -69,7 +68,7 @@
             &quot;lua_type&quot;: &quot;internal_connection?&quot;,
             &quot;private&quot;: true,
             &quot;source&quot;: {
-                &quot;line&quot;: 36,
+                &quot;line&quot;: 35,
                 &quot;path&quot;: &quot;src/connection.luau&quot;
             }
         }
@@ -98,7 +97,7 @@
         &quot;path&quot;: &quot;src/connection.luau&quot;
     }
 }</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#connection" class="table-of-contents__link toc-highlight">connection</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#Disconnect" class="table-of-contents__link toc-highlight">:Disconnect</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2024 Khoshal-Studio. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
-<script src="/luau-signal/assets/js/runtime~main.72e69a94.js"></script>
-<script src="/luau-signal/assets/js/main.983b5747.js"></script>
+<script src="/luau-signal/assets/js/runtime~main.a5b96083.js"></script>
+<script src="/luau-signal/assets/js/main.aa5fe03d.js"></script>
 </body>
 </html>
