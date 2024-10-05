@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[469],{91998:e=>{e.exports=JSON.parse('{"functions":[],"properties":[],"types":[],"name":"immutable_signal","desc":"An immutable signal object that can only be connected to.\\n    ","source":{"line":162,"path":"src/init.luau"}}')}}]);

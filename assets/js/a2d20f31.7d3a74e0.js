@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[23],{62612:e=>{e.exports=JSON.parse('{"functions":[],"properties":[],"types":[],"name":"restricted_signal","desc":"A restricted signal object that can only be connected to.\\n    ","source":{"line":127,"path":"src/init.luau"}}')}}]);
