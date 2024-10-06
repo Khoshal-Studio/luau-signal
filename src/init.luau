@@ -2,100 +2,27 @@
 
 -------------------------------------------------------------------------------------------
 
-local signal_types : nil = require(script:WaitForChild("signal_types"))
-
-export type connection = signal_types.connection
-export type signal = signal_types.signal
-type internal_signal = signal_types.internal_signal
-type internal_connection = signal_types.internal_connection
-export type fire<T> = signal_types.fire<T>
-export type restricted_signal = signal_types.restricted_signal
+local connection = require(script:WaitForChild("connection"))
+local types = require(script:WaitForChild("types"))
 
 -------------------------------------------------------------------------------------------
 
---[=[
-    Creates a connection object that can be used to disconnect the signal handler.
-
-    @within signal
-    @param signal : signal — The signal object.
-    @param fn : `(...any) -> ()` — The signal handler function.
-    @return connection : connection — The connection object.
-]=]
-local function connection_new(signal: internal_signal, fn: (...any) -> ()) : connection
-
-    --[[----------------------------------------------------------------------]]--s
-
-    local connection : internal_connection = nil
-
-    --[[----------------------------------------------------------------------]]--
-
-    local function disconnect(self : internal_connection)
-        if not self.connected then return end
-
-        self.connected = false
-
-        if self.signal.handler_list_head == self then
-            self.signal.handler_list_head = self.next
-        else
-            local prev : internal_connection? = self.signal.handler_list_head
-
-            while prev and prev.next ~= self do
-                prev = prev.next
-            end
-
-            if prev then
-                prev.next = self.next
-            end
-        end
-    end
-
-    --[[----------------------------------------------------------------------]]--
-
-    connection = {
-        connected = true,
-        signal = signal,
-        fn = fn,
-        next = nil,
-
-        Disconnect = disconnect
-    } :: any
-
-    --[[----------------------------------------------------------------------]]--
-
-    return (connection :: any) :: connection
-end
+export type connection = types.connection
+export type signal = types.signal
+type internal_signal = types.internal_signal
+type internal_connection = types.internal_connection
+export type fire<T> = types.fire<T>
+export type restricted_signal = types.restricted_signal
 
 -------------------------------------------------------------------------------------------
 
---[=[
-    Creates a new signal object.
-
-    @function signal.new
-    @within signal
-    @return signal : `signal` — The signal object.
-]=]
-local function signal_new() : signal
-
-    --[[----------------------------------------------------------------------]]--
-    
-    local signal : internal_signal = nil
+local function new() : signal
+    local self : internal_signal = nil
 
     --[[----------------------------------------------------------------------]]--
 
-    
-    --[=[
-        Connects a handler function to the signal.
-
-        @within signal
-        @method Connect
-        @param self : signal — The signal object.
-        @param fn : `(...any) -> ()` — The signal handler function.
-        @return connection : `connection` — The connection object.
-    ]=]
-    local function connect(self : internal_signal, fn: (...any) -> ()) : connection
-        if (self :: any).__index then self = (self :: any).__index end
-
-        local connection : internal_connection = connection_new(self, fn) :: any
+    local function connect(self : internal_signal, handler: (...any) -> ()) : connection
+        local connection = connection(self, handler)
 
         if self.handler_list_head then
             connection.next = self.handler_list_head
@@ -104,32 +31,15 @@ local function signal_new() : signal
             self.handler_list_head = connection
         end
 
-        return connection :: connection
+        return connection
     end
 
-    --[=[
-        Disconnects all handler functions from the signal.
-
-        @function signal.DisconnectAll
-        @within signal
-        @param self : `signal` — The signal object.
-    ]=]
-
-    local function disconnect_all(self : internal_signal)
-        if (self :: any).__index then self = (self :: any).__index end
-
+    
+    local function disconnect_all(self : internal_signal) : ()
         self.handler_list_head = nil
     end
 
-    --[=[
-        Fires the signal with the given arguments.
-
-        @function signal.Fire
-        @within signal
-        @param self : `signal` — The signal object.
-        @param ... : `any` — The arguments to pass to the signal handlers.
-    ]=]
-    local function fire(self : internal_signal, ...)
+    local function fire(self : internal_signal, ...) : ()
         local item = (self.handler_list_head :: any) :: internal_connection 
 
         while item do
@@ -141,18 +51,7 @@ local function signal_new() : signal
         end
     end
 
-    --[=[
-        Yields the current thread until the signal is fired.
-
-        @function signal.Wait
-        @within signal
-        @param self : `signal` — The signal object.
-        @return ... : `any` — The arguments passed to the signal handlers.
-        @yields
-    ]=]
-    local function wait(self : internal_signal, ...)
-        if (self :: any).__index then self = (self :: any).__index end
-
+    local function wait(self : internal_signal, ...) : ...any
         local waiting_coroutine = coroutine.running()
 
         local connection : connection = nil
@@ -164,18 +63,7 @@ local function signal_new() : signal
         return coroutine.yield()
     end
 
-    --[=[
-        Connects a handler function to the signal that will only be called once.
-
-        @function signal.Once
-        @within signal
-        @param self : `signal` — The signal object.
-        @param fn : `(...any) -> ()` — The signal handler function.
-        @return connection : `connection` — The connection object.
-    ]=]
     local function once(self : internal_signal, fn: (...any) -> ())
-        if (self :: any).__index then self = (self :: any).__index end
-
         local connection : connection = nil
         connection = self:Connect(function(...)
             local internal = connection :: internal_connection
@@ -191,16 +79,38 @@ local function signal_new() : signal
     
     --[[----------------------------------------------------------------------]]--
 
-    local restricted = {
-        Connect = connect,
-        DisconnectAll = disconnect_all,
-        Wait = wait,
-        Once = once,
+    local immutable_signal = {
+        Connect = function(...)
+            return connect(...)
+        end,
+        Wait = function(...)
+            return wait(...)
+        end,
+        Once = function(...)
+            return once(...)
+        end,
     }
 
     --[[----------------------------------------------------------------------]]--
 
-    signal = {
+    local restricted = {
+        Connect = function(...)
+            return connect(...)
+        end,
+        DisconnectAll = function(...)
+            return disconnect_all(...)
+        end,
+        Wait = function(...)
+            return wait(...)
+        end,
+        Once = function(...)
+            return once(...)
+        end
+    }
+
+    --[[----------------------------------------------------------------------]]--
+
+    self = {
         handler_list_head = nil,
 
         Connect = connect,
@@ -208,20 +118,19 @@ local function signal_new() : signal
         Fire = fire,
         Wait = wait,
         Once = once,
-        Restricted = restricted
+
+        
+        Restricted = restricted,
+        Immutable = immutable_signal,
     } :: any
 
     --[[----------------------------------------------------------------------]]--
 
-    restricted.__index = signal
-
-    --[[----------------------------------------------------------------------]]--
-
-    return (signal :: any) :: signal
+    return self
 end 
 
 -------------------------------------------------------------------------------------------
 
-return signal_new
+return new
 
 -------------------------------------------------------------------------------------------
