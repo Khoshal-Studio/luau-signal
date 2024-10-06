@@ -1,2 +1,2 @@
 # signal
-A Luau module that provides two types of event signal classes, restricted signal and signal.
+A Luau class module that provides a quick way of creating event/signal objects that contain restricted and immutable interfaces.
