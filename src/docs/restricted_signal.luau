@@ -35,3 +35,10 @@
 
     Connects a handler function to the signal that will only be called once.
 ]=]
+
+--[=[
+    @prop Immutable immutable_signal
+    @within restricted_signal
+
+    An immutable signal object that can only be connected to.
+]=]
