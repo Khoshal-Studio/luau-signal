@@ -21,7 +21,7 @@ Welcome to the `signal` class module. This module is a lightweight implementatio
 Head to the [Releases Page](https://github.com/Khoshal-Studio/luau-signal/releases) on Github and download the signal.rbxm file attached from the latest release. You can then drag this file from your file explorer into the explorer tab in Roblox Studio.
 
 #### Toolbox
-On a browser, go the [Marketplace Asset page](https://create.roblox.com/store/asset/107842237168389) for the signal module and add the free asset to your toolbox. In Roblox Studio
+On a browser, go the [Marketplace Asset page](https://create.roblox.com/store/asset/107842237168389) for the signal module and add the free asset to your toolbox. In Roblox Studio, you can add the module to your game through the Toolbox menu, where you will find it under the "My Models" section.
 
 #### Build from Source
 Alternatively you can build the module yourself by cloning the repository with the command `git clone https://github.com/Khoshal-Studio/luau-signal.git` and then running the command `rojo build --output signal.rbxl`. This requires the Rojo 7.4 CLI.
@@ -31,7 +31,7 @@ You can clone the repository and simply copy the `src` directory and place it in
 
 ## Usage
 
-The signal module returns a function that creates a new signal object. The API is identical to the Roblox `RBXScriptSignal` class, with the addition of the `Immutable` and `Restricted` interfaces, which are stored as properties of the signal object. Refer to the [API Documentation]() for more information.
+The signal module returns a function that creates a new signal object. The API is identical to the Roblox `RBXScriptSignal` class, with the addition of the `Immutable` and `Restricted` interfaces, which are stored as properties of the signal object. Refer to the [API Documentation](https://khoshal-studio.github.io/luau-signal/api) for more information.
 
 ### Examples
 
