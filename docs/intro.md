@@ -31,14 +31,14 @@ You can clone the repository and simply copy the `src` directory and place it in
 
 ## Usage
 
-The signal module returns a function that creates a new signal object. The API is identical to the Roblox `RBXScriptSignal` class, with the addition of the `Immutable` and `Restricted` interfaces, which are stored as properties of the signal object. Refer to the [API Documentation](https://khoshal-studio.github.io/luau-signal/api) for more information.
+Create a new signal with the `.new` method. sThe API is identical to the Roblox `RBXScriptSignal` class, with the addition of the `Immutable` and `Restricted` interfaces, which are stored as properties of the signal object. Refer to the [API Documentation](https://khoshal-studio.github.io/luau-signal/api) for more information.
 
 ### Examples
 
 ```lua
 local signal = require(path.to.signal)
 
-local mySignal = signal()
+local mySignal = signal.new()
 
 mySignal:Connect(function()
     print("Hello, World!")
@@ -46,7 +46,7 @@ end)
 ```
 
 ```lua
-local DiedSignal = signal()
+local DiedSignal = signal.new()
 
 local Restricted = DiedSignal.Restricted
 local Immutable = DiedSignal.Immutable
