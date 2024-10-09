@@ -20,6 +20,10 @@ export type immutable_signal = types.immutable_signal
 
 local methods = {
     Connect = function(self: internal_signal, handler: (...any) -> ()): connection
+        if type(handler) ~= "function" then
+            error("Invalid type for handler: expected function, got: " .. typeof(handler))
+        end
+
         return connection.new(self, handler)
     end,
 
@@ -52,7 +56,11 @@ local methods = {
         return coroutine.yield()
     end,
 
-    Once = function(self: internal_signal, fn: (...any) -> ()): connection
+    Once = function(self: internal_signal, handler: (...any) -> ()): connection
+        if type(handler) ~= "function" then
+            error("Invalid type for handler: expected function, got: " .. typeof(handler))
+        end
+
         local connection : connection = nil
 
         connection = self:Connect(function(...)
@@ -61,7 +69,7 @@ local methods = {
                 connection:Disconnect()
             end
 
-            fn(...)
+            handler(...)
         end)
 
         return connection

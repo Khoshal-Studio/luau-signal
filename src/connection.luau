@@ -29,6 +29,14 @@ local methods = {
 ------------------------------------------------------------------------------------------------------------------------
 
 local function new(signal: types.internal_signal, fn: (...any?) -> ...any?): types.internal_connection
+    if signal == nil then
+        error("Signal cannot be nil", 2)
+    end
+
+    if fn == nil then
+        error("Handler function cannot be nil", 2)
+    end
+
     local self = {
         connected = true,
         signal = signal,
