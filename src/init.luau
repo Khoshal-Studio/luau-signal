@@ -14,6 +14,7 @@ type internal_signal = types.internal_signal
 type internal_connection = types.internal_connection
 export type fire<T> = types.fire<T>
 export type restricted_signal = types.restricted_signal
+export type immutable_signal = types.immutable_signal
 
 -------------------------------------------------------------------------------------------
 
