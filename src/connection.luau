@@ -6,8 +6,8 @@ local types = require(script.Parent:WaitForChild("types"))
 
 ------------------------------------------------------------------------------------------------------------------------
 
-local function new(signal : types.internal_signal, fn : (...any?) -> ...any?) : types.internal_connection
-    local function disconnect(self : types.internal_connection)
+local methods = {
+    Disconnect = function(self: types.internal_connection)
         if not self.connected then return end
     
         if self.signal.handler_list_head == self then
@@ -24,14 +24,18 @@ local function new(signal : types.internal_signal, fn : (...any?) -> ...any?) : 
             end
         end
     end
+}
 
+------------------------------------------------------------------------------------------------------------------------
+
+local function new(signal: types.internal_signal, fn: (...any?) -> ...any?): types.internal_connection
     local self = {
         connected = true,
         signal = signal,
         fn = fn,
         next = nil,
         
-        Disconnect = disconnect
+        Disconnect = methods.Disconnect
     }
 
     return self
@@ -40,6 +44,8 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 
-return new
+return {
+    new = new
+}
 
 ------------------------------------------------------------------------------------------------------------------------

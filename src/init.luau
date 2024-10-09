@@ -1,4 +1,5 @@
 --!strict
+--!native
 
 -------------------------------------------------------------------------------------------
 
@@ -16,30 +17,16 @@ export type restricted_signal = types.restricted_signal
 
 -------------------------------------------------------------------------------------------
 
-local function new() : signal
-    local self : internal_signal = nil
+local methods = {
+    Connect = function(self: internal_signal, handler: (...any) -> ()): connection
+        return connection.new(self, handler)
+    end,
 
-    --[[----------------------------------------------------------------------]]--
-
-    local function connect(self : internal_signal, handler: (...any) -> ()) : connection
-        local connection = connection(self, handler)
-
-        if self.handler_list_head then
-            connection.next = self.handler_list_head
-            self.handler_list_head = connection
-        else
-            self.handler_list_head = connection
-        end
-
-        return connection
-    end
-
-    
-    local function disconnect_all(self : internal_signal) : ()
+    DisconnectAll = function(self: internal_signal): ()
         self.handler_list_head = nil
-    end
+    end,
 
-    local function fire(self : internal_signal, ...) : ()
+    Fire = function(self: internal_signal, ...): ()
         local item = (self.handler_list_head :: any) :: internal_connection 
 
         while item do
@@ -49,22 +36,24 @@ local function new() : signal
 
             item = item.next :: any
         end
-    end
+    end,
 
-    local function wait(self : internal_signal, ...) : ...any
+    Wait = function(self: internal_signal, ...): ...any
         local waiting_coroutine = coroutine.running()
 
         local connection : connection = nil
+
         connection = self:Connect(function(...)
             connection:Disconnect()
             task.spawn(waiting_coroutine, ...)
         end)
 
         return coroutine.yield()
-    end
+    end,
 
-    local function once(self : internal_signal, fn: (...any) -> ())
+    Once = function(self: internal_signal, fn: (...any) -> ()): connection
         local connection : connection = nil
+
         connection = self:Connect(function(...)
             local internal = connection :: internal_connection
             if internal.connected then
@@ -76,36 +65,38 @@ local function new() : signal
 
         return connection
     end
-    
+}
+
+-------------------------------------------------------------------------------------------
+
+local function new() : signal
+    local self: internal_signal = nil
+
     --[[----------------------------------------------------------------------]]--
 
-    local immutable_signal = {
-        Connect = function(...)
-            return connect(...)
-        end,
-        Wait = function(...)
-            return wait(...)
-        end,
-        Once = function(...)
-            return once(...)
-        end,
+    local Connect = methods.Connect
+    local DisconnectAll = methods.DisconnectAll
+    local Fire = methods.Fire
+    local Wait = methods.Wait
+    local Once = methods.Once
+
+    --[[----------------------------------------------------------------------]]--
+
+    local Immutable = {
+        Connect = Connect,
+        Wait = Wait,
+        Once = Once
     }
 
     --[[----------------------------------------------------------------------]]--
 
-    local restricted = {
-        Connect = function(...)
-            return connect(...)
-        end,
-        DisconnectAll = function(...)
-            return disconnect_all(...)
-        end,
-        Wait = function(...)
-            return wait(...)
-        end,
-        Once = function(...)
-            return once(...)
-        end
+    local Restricted = {
+        DisconnectAll = DisconnectAll,
+        Connect = Connect,
+        Wait = Wait,
+        Once = Once,
+
+        Immutable = Immutable
     }
 
     --[[----------------------------------------------------------------------]]--
@@ -113,15 +104,15 @@ local function new() : signal
     self = {
         handler_list_head = nil,
 
-        Connect = connect,
-        DisconnectAll = disconnect_all,
-        Fire = fire,
-        Wait = wait,
-        Once = once,
+        Connect = Connect,
+        DisconnectAll = DisconnectAll,
+        Fire = Fire,
+        Wait = Wait,
+        Once = Once,
 
         
-        Restricted = restricted,
-        Immutable = immutable_signal,
+        Restricted = Restricted,
+        Immutable = Immutable,
     } :: any
 
     --[[----------------------------------------------------------------------]]--
@@ -131,6 +122,8 @@ end
 
 -------------------------------------------------------------------------------------------
 
-return new
+return {
+    new = new
+}
 
 -------------------------------------------------------------------------------------------
