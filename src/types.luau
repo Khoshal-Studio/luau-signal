@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------------------
 
 export type connection = {
-    Disconnect: (self : any) -> ()
+    Disconnect: (self: any) -> ()
 }
 
 export type internal_connection = connection & {
