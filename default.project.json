@@ -1,9 +1,6 @@
 {
     "name": "signal",
     "tree": {
-        "$className": "DataModel",
-        "signal" : {
-            "$path" : "src"
-        }
+        "$path" : "src"
     }
 }

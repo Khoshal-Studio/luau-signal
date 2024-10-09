@@ -24,7 +24,7 @@ Head to the [Releases Page](https://github.com/Khoshal-Studio/luau-signal/releas
 On a browser, go the [Marketplace Asset page](https://create.roblox.com/store/asset/107842237168389) for the signal module and add the free asset to your toolbox. In Roblox Studio, you can add the module to your game through the Toolbox menu, where you will find it under the "My Models" section.
 
 #### Build from Source
-Alternatively you can build the module yourself by cloning the repository with the command `git clone https://github.com/Khoshal-Studio/luau-signal.git` and then running the command `rojo build --output signal.rbxl`. This requires the Rojo 7.4 CLI.
+Alternatively you can build the module yourself by cloning the repository with the command `git clone https://github.com/Khoshal-Studio/luau-signal.git` and then running the command `rojo build --output signal.rbxm`. This requires the Rojo 7.4 CLI.
 
 ### Rojo
 You can clone the repository and simply copy the `src` directory and place it into your Rojo project. You should rename the folder from "src" to something more suitable such as "signal".
