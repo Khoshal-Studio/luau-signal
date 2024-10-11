@@ -2,5 +2,8 @@
     "name": "signal",
     "tree": {
         "$path" : "src"
-    }
+    },
+    "globIgnorePaths": [
+        "src/docs"
+    ]
 }
